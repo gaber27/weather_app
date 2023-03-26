@@ -1,0 +1,46 @@
+{
+  "coord": {
+    "lon": 29.9553,
+    "lat": 31.2156
+  },
+  "weather": [
+    {
+      "id": 800,
+      "main": "Clear",
+      "description": "clear sky",
+      "icon": "01n"
+    }
+  ],
+  "base": "stations",
+  "main": {
+    "temp": 289.45,
+    "feels_like": 289.2,
+    "temp_min": 289.45,
+    "temp_max": 289.45,
+    "pressure": 1014,
+    "humidity": 79,
+    "sea_level": 1014,
+    "grnd_level": 1014
+  },
+  "visibility": 10000,
+  "wind": {
+    "speed": 4.18,
+    "deg": 282,
+    "gust": 5.78
+  },
+  "clouds": {
+    "all": 0
+  },
+  "dt": 1679859933,
+  "sys": {
+    "type": 1,
+    "id": 2512,
+    "country": "EG",
+    "sunrise": 1679803023,
+    "sunset": 1679847286
+  },
+  "timezone": 7200,
+  "id": 361058,
+  "name": "Alexandria",
+  "cod": 200
+}
