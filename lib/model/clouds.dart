@@ -1,18 +1,16 @@
-class Clouds
-{
- int all;
+class Clouds {
+  final int? all;
 
- Clouds({required this.all});
+  Clouds({this.all});
 
- factory Clouds.fromJson(Map<String, dynamic> json) {
+  factory Clouds.fromJson(dynamic json) {
+    if (json == null) {
+      return Clouds();
+    }
+
     return Clouds(
-      all: int.parse(json["all"]),
+      all: json['all'],
     );
   }
-
- Map<String, dynamic> toJson() {
-    return {
-      "all": all,
-    };
-  }
 }
+

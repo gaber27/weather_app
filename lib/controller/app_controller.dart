@@ -1,113 +1,72 @@
-
-import 'package:get/get.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:weather/model/Last_Five.dart';
 import 'package:weather/model/current_weather.dart';
 import 'package:weather/network/service.dart';
 
-import '../constant/api.dart';
-import '../model/Last_Five.dart';
 
-class AppController extends GetxController 
-{
-  String city ;
+class AppController extends GetxController {
+  String? city;
+  CurrentWeather currentWeatherData = CurrentWeather();
+  List<CurrentWeather> dataList = [];
+  List<LastFiveDays> fiveDaysData = [];
 
-  AppController(this.city);
-
-  CurrentWeather ? currentWeather ;
-  List<LastFiveDays>  lastFive = [] ;
-  List<CurrentWeather>  FiveCurrentWeathe = [] ;
+  AppController({required this.city});
 
   @override
-  void onInit()
-  {
+  void onInit() {
     initState();
-    getFivesCites();
+    getTopFiveCities();
     super.onInit();
   }
 
-  void updateTemp()
-  {
+  void updateWeather() {
     initState();
   }
 
-  void initState()
-  {
-        getCurrentTemp();
-        getLastFiveTemp();
+  void initState() {
+    getCurrentWeatherData();
+    getFiveDaysData();
   }
 
-  void getCurrentTemp()
-  {
-    WeatherService(city: city).getCurrentTemp(
-        onSuccess: (data)
-        {
-          currentWeather =data ;
+  void getCurrentWeatherData() {
+    WeatherService(city: '$city').getCurrentTemp(
+        onSuccess: (data) {
+          currentWeatherData = data;
           update();
         },
-        onError: (e){
-          Get.snackbar(
-            'error',
-            'some thing missed',
-            duration: Duration(milliseconds: 3),
-          );
-          print(e.toString());
-          update();
-        }
-    );
+        onError: (error) => {
+          print(error),
+          update(),
+        });
   }
 
-
-  void getFivesCites() {
+  void getTopFiveCities() {
     List<String> cities = [
-      'Cairo',
-      'Alexandria',
-      'Gize',
+      'alexandria',
+      'cairo',
+      'Giza',
       'Sohag',
-      'Fayoum'
+      'fayoum'
     ];
-
-    cities.forEach((ele) {
-
-      FiveCurrentWeathe.add(ele as CurrentWeather);
-
-      WeatherService(city: city).getCurrentTemp(
-          onSuccess: (data)
-          {
-            currentWeather =data ;
-            update();
-          },
-          onError: (e){
-            Get.snackbar(
-              'error',
-              'some thing missed',
-              duration: Duration(milliseconds: 3),
-            );
-            print(e.toString());
-            update();
-          }
-      );
+    cities.forEach((city) {
+      WeatherService(city: '$city').getCurrentTemp(onSuccess: (data) {
+        dataList.add(data);
+        update();
+      }, onError: (error) {
+        print(error);
+        update();
+      });
     });
-
-
   }
 
-  void getLastFiveTemp() {
-    WeatherService(city: city).getLastFiveDays(
-        onSuccess: (data)
-        {
-          lastFive =data as List<LastFiveDays> ;
+  void getFiveDaysData() {
+    WeatherService(city: '$city').getLastFiveDays(
+        onSuccess: (data) {
+          fiveDaysData = data;
           update();
-        },
-        onError: (e){
-          Get.snackbar(
-            'error',
-            'some thing missed',
-            duration: Duration(milliseconds: 3),
-          );
-          print(e.toString());
-          update();
-        }
-    );
-
+        }, onError: (error) {
+      print(error);
+      update();
+    });
   }
-  
 }

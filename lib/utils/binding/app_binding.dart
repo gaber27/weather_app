@@ -5,6 +5,6 @@ import 'package:weather/controller/app_controller.dart';
 class AppBinding extends Bindings{
   @override
   void dependencies() {
-    Get.lazyPut(() => AppController(city));
+    Get.lazyPut(() => AppController(city: city.toString()));
   }
 }

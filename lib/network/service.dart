@@ -6,39 +6,68 @@ import 'package:weather/network/dio.dart';
 class WeatherService
 {
   String city ;
+  String baseUrl = 'https://api.openweathermap.org/data/2.5';
 
   WeatherService({required this.city});
 
   // Function To Get Current Temp in City
 
   void getCurrentTemp({
-   Function() ? beforSend ,
-  required Function(CurrentWeather ? currentWeather) onSuccess ,
-  required Function(dynamic error) onError ,
+   Function() ? beforeSend ,
+   Function(CurrentWeather currentWeather)? onSuccess ,
+   Function(dynamic error)? onError ,
 })
   {
-      // This is Url for current Temp
-    final url = "$baseUrlCurrent$city&$apiKey";
-      DioHelper().getDate(
-        beforSend: ()=> beforSend!(),
-          onSuccess: (data)=>onSuccess(CurrentWeather.fromJson(data)),
-          onError: (e)=>onError(e),
-          url: url
+
+
+    /// This is Url for current Temp
+    final url = '$baseUrlCurrent$city&lang=en&$apiKey';
+      DioHelper(url: url).getDate(
+        beforeSend: ()=>
+        {
+          if(beforeSend != null)
+          {
+            print(url),
+            beforeSend()
+          }
+        },
+        onSuccess: (data) =>
+        {
+          onSuccess!(CurrentWeather.fromJson(data)),
+        },
+        onError: (e)=>
+    {
+      if(onError != null)
+      {
+        onError(e),
+      }
+
+    }
+
       );
   }
   void getLastFiveDays({
-   Function() ?beforSend ,
-  required Function(CurrentWeather ? currentWeather) onSuccess ,
-  required Function(dynamic error) onError ,
+    Function()? beforeSend,
+    Function(List<LastFiveDays> fiveDayData)? onSuccess,
+    Function(dynamic error)? onError,
 })
   {
-      // This is Url for current Temp
-    final url = "$baseUrlLast$city&$apiKey";
-      DioHelper().getDate(
-        beforSend: ()=> beforSend!(),
-          onSuccess: (data)=>onSuccess((data['list']).map((ittem)=>LastFiveDays.fromJson(ittem)).toList() ?? List.empty()),
-          onError: (e)=>onError(e),
-          url: url
+
+
+    /// This is Url for current Temp
+    final url = '$baseUrlLast$city&lang=en&$apiKey';
+      DioHelper(url: '$url' ).getDate(
+          beforeSend: ()=>{},
+        onSuccess: (data)=>
+        {
+          onSuccess!((data['list'] as List).map((t) => LastFiveDays.fromJson(t))
+            .toList())
+        },
+          onError: (error) =>
+          {
+            print(error),
+            onError!(error),
+          }
       );
   }
 }
